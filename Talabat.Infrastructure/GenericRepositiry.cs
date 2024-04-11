@@ -10,7 +10,7 @@ using Talabat.Infrastructure.Data;
 
 namespace Talabat.Infrastructure
 {
-	public class GenericRepositiry<T> : IGenericRepositiryy<T> where T : BaseEntity
+	public class GenericRepositiry<T> : IGenericRepository<T> where T : BaseEntity
 	{
 
 		private readonly StoreContext _dbContext;
@@ -20,7 +20,10 @@ namespace Talabat.Infrastructure
 		}
 		public async Task<IEnumerable<T>> GetAllAsync()
 		{
-			return await _dbContext.Set<T>().ToListAsync();
+			if (typeof(T) == typeof(Product))
+				return (IEnumerable<T>) await _dbContext.Products.Include(p => p.ProductBrand).Include(p => p.ProductCategory).ToListAsync();
+			else
+				return await _dbContext.Set<T>().ToListAsync();
 		}
 		public async Task<T?> GetByIdAsync(int id)
 		{

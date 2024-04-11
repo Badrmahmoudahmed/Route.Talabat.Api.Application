@@ -7,7 +7,7 @@ using Talabat.Core.Entities;
 
 namespace Talabat.Core.Repositiry.Contract
 {
-	public interface IGenericRepositiryy <T> where T : BaseEntity
+	public interface IGenericRepository<T> where T : BaseEntity
 	{
 		Task<IEnumerable<T>> GetAllAsync();
 		Task<T?> GetByIdAsync(int id);

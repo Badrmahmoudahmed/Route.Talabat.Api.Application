@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
+using Talabat.Core.Repositiry.Contract;
+using Talabat.Infrastructure;
 using Talabat.Infrastructure.Data;
 
 namespace Route.Talabat.Api
@@ -16,9 +18,12 @@ namespace Route.Talabat.Api
 
 			builder.Services.AddControllers();
 			builder.Services.AddDbContext<StoreContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConntection")); });
+			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositiry<>));
+
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+			
 			#endregion
 
 			var app = builder.Build();
