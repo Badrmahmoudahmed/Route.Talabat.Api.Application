@@ -30,6 +30,7 @@ namespace Route.Talabat.Api
 			{
 				var dbContext = services.GetRequiredService<StoreContext>();
 				await dbContext.Database.MigrateAsync();
+				await StoreContextSeed.seedAsync(dbContext);
 			}
 			catch (Exception ex)
 			{
