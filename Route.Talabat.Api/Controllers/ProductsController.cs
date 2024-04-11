@@ -20,5 +20,14 @@ namespace Route.Talabat.Api.Controllers
 			var products = await _productRepository.GetAllAsync();
 			return Ok(products);
 		}
+
+
+		[HttpGet("{id}")]
+		public async Task<ActionResult<Product>> GetAllById(int id)
+		{
+			var product = await _productRepository.GetByIdAsync(id);
+			return Ok(product);
+		}
+
 	}
 }
