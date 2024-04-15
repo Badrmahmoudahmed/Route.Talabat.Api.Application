@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositiry.Contract;
+using Talabat.Core.Specification;
 
 namespace Route.Talabat.Api.Controllers
 {
@@ -17,7 +18,8 @@ namespace Route.Talabat.Api.Controllers
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<Product>>> GetAll()
 		{
-			var products = await _productRepository.GetAllAsync();
+			var spec = new ProductWithBrandAndCategorySpecification();
+			var products = await _productRepository.GetAllWithSpecAsync(spec);
 			return Ok(products);
 		}
 
