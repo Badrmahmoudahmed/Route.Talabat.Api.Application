@@ -10,7 +10,8 @@ namespace Route.Talabat.Api.Helpers
         {
             CreateMap<Product, ProductToReturnDto>()
                 .ForMember(D => D.ProductBrand, O => O.MapFrom(S => S.ProductBrand.Name))
-                .ForMember(D => D.ProductCategory, O => O.MapFrom(S => S.ProductCategory.Name));
+                .ForMember(D => D.ProductCategory, O => O.MapFrom(S => S.ProductCategory.Name))
+                .ForMember(D => D.PictureUrl , O => O.MapFrom<ProductPictureResolver>());
         }
     }
 }
