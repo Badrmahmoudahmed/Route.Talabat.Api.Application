@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
 using Route.Talabat.Api.ErrorsHandler;
 using Route.Talabat.Api.Helpers;
+using Route.Talabat.Api.Middlewares;
 using Talabat.Core.Repositiry.Contract;
 using Talabat.Infrastructure;
 using Talabat.Infrastructure.Data;
@@ -68,6 +69,7 @@ namespace Route.Talabat.Api
 			}
 
 			#region Add Kesteral Middllwears
+			app.UseMiddleware<ExptionMiddleware>();
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{

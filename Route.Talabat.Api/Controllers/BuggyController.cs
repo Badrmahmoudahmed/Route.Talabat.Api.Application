@@ -30,8 +30,9 @@ namespace Route.Talabat.Api.Controllers
 		[HttpGet("ServerError")]
 		public ActionResult GetServerError()
 		{
-			
-			return GetServerError();
+			var product = _dbcontext.Products.Find(100);
+			var producttodto = product.ToString();
+			return Ok(producttodto);
 		}
 
 		[HttpGet("BadRequest")]
