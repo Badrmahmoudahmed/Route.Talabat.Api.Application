@@ -38,4 +38,4 @@ namespace Route.Talabat.Api.Middlewares
 			}
 		}
 	}
-}
+} 

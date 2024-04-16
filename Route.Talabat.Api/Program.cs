@@ -76,7 +76,7 @@ namespace Route.Talabat.Api
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
-
+			app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 			app.UseHttpsRedirection();
 
 			//app.UseAuthorization();
