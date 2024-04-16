@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Route.Talabat.Api.Dtos;
+using Route.Talabat.Api.ErrorsHandler;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositiry.Contract;
 using Talabat.Core.Specification;
@@ -29,6 +30,9 @@ namespace Route.Talabat.Api.Controllers
 			return Ok(MappedProducts);
 		}
 
+
+		[ProducesResponseType(typeof(ProductToReturnDto), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
 
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Product>> GetById(int id)
