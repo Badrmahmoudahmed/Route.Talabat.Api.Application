@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using Route.Talabat.Api.ErrorsHandler;
 using Talabat.Infrastructure.Data;
 
 namespace Route.Talabat.Api.Controllers
@@ -21,7 +22,7 @@ namespace Route.Talabat.Api.Controllers
 		{
 			var product = _dbcontext.Products.Find(100);
 			if (product is null)
-				return NotFound();
+				return NotFound(new ApiResponse(404));
 
 			return Ok(product);
 		}
@@ -30,19 +31,19 @@ namespace Route.Talabat.Api.Controllers
 		public ActionResult GetServerError()
 		{
 			var product = _dbcontext.Products.Find(100);
-			return Ok(product);
+			return GetServerError();
 		}
 
 		[HttpGet("BadRequest")]
 		public ActionResult GetBadRequestError() 
 		{
-			return BadRequest();
+			return BadRequest(new ApiResponse(400));
 		}
 
 		[HttpGet("Unuthorized")]
 		public ActionResult GetUnAuthorizedError()
 		{
-			return Unauthorized();
+			return Unauthorized(new ApiResponse(401));
 		}
     }
 }
