@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
 using Route.Talabat.Api.ErrorsHandler;
+using Route.Talabat.Api.Extenstion;
 using Route.Talabat.Api.Helpers;
 using Route.Talabat.Api.Middlewares;
 using Talabat.Core.Repositiry.Contract;
@@ -22,12 +23,12 @@ namespace Route.Talabat.Api
 
 			builder.Services.AddControllers();
 			builder.Services.AddDbContext<StoreContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConntection")); });
-			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositiry<>));
-			builder.Services.AddAutoMapper(typeof(MappingProfiles));
+			builder.Services.AddAplicationServices();
+
 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+			builder.Services.AddSwaggerServices();
+
 			#region ConfigureValidationError
 			builder.Services.Configure<ApiBehaviorOptions>(option =>
 				{
@@ -73,8 +74,7 @@ namespace Route.Talabat.Api
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseSwaggerMiddleWare();
 			}
 			app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 			app.UseHttpsRedirection();
