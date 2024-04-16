@@ -1,6 +1,8 @@
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
+using Route.Talabat.Api.ErrorsHandler;
 using Route.Talabat.Api.Helpers;
 using Talabat.Core.Repositiry.Contract;
 using Talabat.Infrastructure;
@@ -25,12 +27,32 @@ namespace Route.Talabat.Api
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
-			
+			#region ConfigureValidationError
+			builder.Services.Configure<ApiBehaviorOptions>(option =>
+				{
+					option.InvalidModelStateResponseFactory = (actioncontext) =>
+					{
+						var erros = actioncontext.ModelState.Where(p => p.Value.Errors.Count > 0)
+						.SelectMany(p => p.Value.Errors)
+						.Select(E => E.ErrorMessage)
+						.ToList();
+
+						var response = new ApiValidationErrorResponse()
+						{
+							Errors = erros
+						};
+
+						return new BadRequestObjectResult(response);
+					};
+
+
+				}); 
+			#endregion
 			#endregion
 
 			var app = builder.Build();
 
-			using var scope = app.Services.CreateScope(); 
+			using var scope = app.Services.CreateScope();
 			var services = scope.ServiceProvider;
 			var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
 			try
