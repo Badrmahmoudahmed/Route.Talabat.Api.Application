@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,17 +10,17 @@ namespace Talabat.Core.Specification
 {
 	public class ProductWithBrandAndCategorySpecification :BaseSpecification<Product>
 	{
-        public ProductWithBrandAndCategorySpecification(string? sort ,int? brandId ,int? CategoryId):base(
+        public ProductWithBrandAndCategorySpecification(ProductSpecParams productSpecParams):base(
                 p => 
-                 (!brandId.HasValue || brandId ==p.BrandId ) &&
-                 (!CategoryId.HasValue || CategoryId == p.CategoryId)
+                 (!productSpecParams.brandId.HasValue || productSpecParams.brandId ==p.BrandId ) &&
+                 (!productSpecParams.categoryId.HasValue || productSpecParams.categoryId == p.CategoryId)
             )
         {
             Includes.Add(P => P.ProductBrand);
             Includes.Add(p => p.ProductCategory);
-            if(!string.IsNullOrEmpty(sort))
+            if(!string.IsNullOrEmpty(productSpecParams.sort))
             {
-                switch(sort)
+                switch(productSpecParams.sort)
                 {
                     case "priceAsc":
                         OrderBy = p => p.Price; 
@@ -36,6 +37,7 @@ namespace Talabat.Core.Specification
             {
                 OrderBy = p => p.Name;
             }
+            ApplyPagenation((productSpecParams.PageIndex - 1) * productSpecParams.Pagesize, productSpecParams.Pagesize);
         }
         public ProductWithBrandAndCategorySpecification(int id):base(P => P.Id == id)
         {

@@ -24,6 +24,8 @@ namespace Talabat.Infrastructure
 				query = query.OrderBy(Spec.OrderBy);
 			if (Spec.OrderByDescndig is not null)
 				query = query.OrderByDescending(Spec.OrderByDescndig);
+			if (Spec.IsPagenationEnabled)
+				query = query.Skip(Spec.Skip).Take(Spec.Take);
 
 			query = Spec.Includes.Aggregate(query, (currentQuery, includeExpression) => currentQuery.Include(includeExpression));
 
