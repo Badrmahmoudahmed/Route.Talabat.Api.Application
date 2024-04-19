@@ -17,8 +17,13 @@ namespace Talabat.Infrastructure
 		{
 			var query = InputQuery;
 
+			
 			if (Spec.Criteria is not null)
 				query = InputQuery.Where(Spec.Criteria);
+			if (Spec.OrderBy is not null)
+				query = query.OrderBy(Spec.OrderBy);
+			if (Spec.OrderByDescndig is not null)
+				query = query.OrderByDescending(Spec.OrderByDescndig);
 
 			query = Spec.Includes.Aggregate(query, (currentQuery, includeExpression) => currentQuery.Include(includeExpression));
 
