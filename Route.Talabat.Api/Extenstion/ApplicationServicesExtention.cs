@@ -9,6 +9,7 @@ namespace Route.Talabat.Api.Extenstion
 		public static IServiceCollection AddAplicationServices(this IServiceCollection services) 
 		{
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositiry<>));
+			services.AddScoped(typeof(IBasketRepository), typeof(BascketRepository));
 			services.AddAutoMapper(typeof(MappingProfiles));
 			return services;
 		}
