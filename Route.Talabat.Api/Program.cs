@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
+using Microsoft.VisualBasic;
 using Route.Talabat.Api.ErrorsHandler;
 using Route.Talabat.Api.Extenstion;
 using Route.Talabat.Api.Helpers;
 using Route.Talabat.Api.Middlewares;
+using StackExchange.Redis;
 using Talabat.Core.Repositiry.Contract;
 using Talabat.Infrastructure;
 using Talabat.Infrastructure.Data;
@@ -23,6 +25,12 @@ namespace Route.Talabat.Api
 
 			builder.Services.AddControllers();
 			builder.Services.AddDbContext<StoreContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConntection")); });
+			builder.Services.AddSingleton<IConnectionMultiplexer>(S =>
+			{
+				var connection = builder.Configuration.GetConnectionString("Redis");
+				return ConnectionMultiplexer.Connect(connection);
+			} 
+			);
 			builder.Services.AddAplicationServices();
 
 

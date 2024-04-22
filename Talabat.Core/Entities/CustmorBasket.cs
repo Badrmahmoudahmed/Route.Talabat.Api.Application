@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Talabat.Core.Entities
 {
-	internal class CustmorBasket
+	public class CustmorBasket
 	{
 		public string Id { get; set; }
         public List<BasketItem> BasketItems { get; set; }
