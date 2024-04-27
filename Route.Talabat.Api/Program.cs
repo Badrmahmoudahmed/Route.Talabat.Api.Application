@@ -11,6 +11,7 @@ using StackExchange.Redis;
 using Talabat.Core.Repositiry.Contract;
 using Talabat.Infrastructure;
 using Talabat.Infrastructure.Data;
+using Talabat.Infrastructure.Identity;
 
 namespace Route.Talabat.Api
 {
@@ -25,6 +26,7 @@ namespace Route.Talabat.Api
 
 			builder.Services.AddControllers();
 			builder.Services.AddDbContext<StoreContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConntection")); });
+			builder.Services.AddDbContext<ApplicationIdentityDBContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConntection")); });
 			builder.Services.AddSingleton<IConnectionMultiplexer>(S =>
 			{
 				var connection = builder.Configuration.GetConnectionString("Redis");
@@ -64,12 +66,15 @@ namespace Route.Talabat.Api
 
 			using var scope = app.Services.CreateScope();
 			var services = scope.ServiceProvider;
+			var dbContext = services.GetRequiredService<StoreContext>();
+			var IdentitydbContext = services.GetRequiredService<ApplicationIdentityDBContext>();
 			var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
 			try
 			{
-				var dbContext = services.GetRequiredService<StoreContext>();
+				
 				await dbContext.Database.MigrateAsync();
 				await StoreContextSeed.seedAsync(dbContext);
+				await IdentitydbContext.Database.MigrateAsync();
 			}
 			catch (Exception ex)
 			{
