@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
@@ -8,6 +9,7 @@ using Route.Talabat.Api.Extenstion;
 using Route.Talabat.Api.Helpers;
 using Route.Talabat.Api.Middlewares;
 using StackExchange.Redis;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repositiry.Contract;
 using Talabat.Infrastructure;
 using Talabat.Infrastructure.Data;
@@ -34,7 +36,7 @@ namespace Route.Talabat.Api
 			} 
 			);
 			builder.Services.AddAplicationServices();
-
+			builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationIdentityDBContext>();
 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddSwaggerServices();
@@ -75,6 +77,8 @@ namespace Route.Talabat.Api
 				await dbContext.Database.MigrateAsync();
 				await StoreContextSeed.seedAsync(dbContext);
 				await IdentitydbContext.Database.MigrateAsync();
+				var usermanger = services.GetRequiredService<UserManager<ApplicationUser>>();
+				await ApplicationIdentitySeeding.SeedUserAsync(usermanger);
 			}
 			catch (Exception ex)
 			{
