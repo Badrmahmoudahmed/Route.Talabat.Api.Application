@@ -31,7 +31,7 @@ namespace Talabat.Services
 				userclaim.Add(new Claim(ClaimTypes.Role, role));
 			}
 
-			var authKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("StrongAuthKey"));
+			var authKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("StrongAuthenticationKeyToReachMoreThan256Bytes"));
 			var token = new JwtSecurityToken(
 					audience:"MySecurityApiUser",
 					issuer: "https://localhost:7142/",
