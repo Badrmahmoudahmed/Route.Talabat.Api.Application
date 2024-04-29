@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -19,12 +20,14 @@ namespace Route.Talabat.Api.Controllers
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
 		private readonly IAuthService _authService;
+		private readonly IMapper _mapper;
 
-		public AccountController(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager,IAuthService authService)
+		public AccountController(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager,IAuthService authService, IMapper mapper)
         {
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_authService = authService;
+			_mapper = mapper;
 		}
 
 		[HttpPost("Login")]
@@ -79,10 +82,10 @@ namespace Route.Talabat.Api.Controllers
 		}
 
 		[HttpGet("adress")]
-		public async Task<ActionResult<Adress>> GetUserAdress()
+		public async Task<ActionResult<AdressDto>> GetUserAdress()
 		{
 			var user = await _userManager.FindUserWithAdressByEmailAsync(User);
-			return Ok(user.Adress);
+			return Ok(_mapper.Map<Adress,AdressDto>(user.Adress));
 		}
     }
 }
