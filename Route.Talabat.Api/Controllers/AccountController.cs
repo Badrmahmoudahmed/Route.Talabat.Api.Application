@@ -87,5 +87,20 @@ namespace Route.Talabat.Api.Controllers
 			var user = await _userManager.FindUserWithAdressByEmailAsync(User);
 			return Ok(_mapper.Map<Adress,AdressDto>(user.Adress));
 		}
-    }
+
+		[HttpPut("adress")]
+		public async Task<ActionResult<Adress>> UpdateUserAdress(AdressDto adress)
+		{
+			var updatedadress =  _mapper.Map<AdressDto, Adress>(adress);
+			var user = await _userManager.FindUserWithAdressByEmailAsync(User);
+
+			updatedadress.Id = user.Adress.Id;
+			user.Adress = updatedadress;
+
+			var result = await _userManager.UpdateAsync(user);
+
+			if (!result.Succeeded) return BadRequest(new ApiValidationErrorResponse() { Errors = result.Errors.Select(e => e.Description)});
+			return Ok(updatedadress);
+		}
+	}
 }
