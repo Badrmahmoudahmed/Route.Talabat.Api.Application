@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +28,7 @@ namespace Route.Talabat.Api.Controllers
 			_categories = categories;
 			_mapper = mapper;
 		}
+		[Authorize (AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpGet]
 		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetAll([FromQuery] ProductSpecParams productSpecParams)
 		{
