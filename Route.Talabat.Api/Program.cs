@@ -87,7 +87,7 @@ namespace Route.Talabat.Api
 			}
 
 			#region Add Kesteral Middllwears
-			//app.UseMiddleware<ExptionMiddleware>();
+			app.UseMiddleware<ExptionMiddleware>();
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{

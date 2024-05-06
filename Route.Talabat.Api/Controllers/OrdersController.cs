@@ -30,6 +30,13 @@ namespace Route.Talabat.Api.Controllers
 			return Ok(order);
 		}
 
+		[HttpGet]
+		public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser(string Email)
+		{
+			var orders = await _orderService.GetOrdersForUserAsync(Email);
+			return Ok(orders);
+		}
+
 
 	}
 }
