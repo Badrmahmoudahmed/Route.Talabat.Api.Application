@@ -6,6 +6,7 @@ using Talabat.Infrastructure;
 using Talabat.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Talabat.Core;
 
 namespace Route.Talabat.Api.Extenstion
 {
@@ -14,6 +15,7 @@ namespace Route.Talabat.Api.Extenstion
 		public static IServiceCollection AddAplicationServices(this IServiceCollection services) 
 		{
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositiry<>));
+			services.AddScoped(typeof(IUnitofWork), typeof(UnitofWork));
 			services.AddScoped(typeof(IBasketRepository), typeof(BascketRepository));
 			services.AddScoped(typeof(IAuthService),typeof(AuthService));
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
