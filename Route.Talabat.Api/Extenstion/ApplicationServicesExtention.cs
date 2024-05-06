@@ -15,6 +15,7 @@ namespace Route.Talabat.Api.Extenstion
 		public static IServiceCollection AddAplicationServices(this IServiceCollection services) 
 		{
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositiry<>));
+			services.AddScoped(typeof(IOrderService), typeof(OrderServices));
 			services.AddScoped(typeof(IUnitofWork), typeof(UnitofWork));
 			services.AddScoped(typeof(IBasketRepository), typeof(BascketRepository));
 			services.AddScoped(typeof(IAuthService),typeof(AuthService));

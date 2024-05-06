@@ -28,7 +28,7 @@ namespace Talabat.Services
 			//_deliverymethodRepo = deliverymethodRepo;
 			//_orderOrder = orderOrder;
 		}
-        public async Task<Order> CreateOrderAsync(string buyerEmail, string basketId, int deliveryMehtodID, Adress ShippingAdress)
+        public async Task<Order> CreateOrderAsync(string buyerEmail, string basketId, int deliveryMehtodID, AdressOrder ShippingAdress)
 		{
 			var basket = await _basketRepository.GetBasketAsync(basketId);
 			var orderItems = new List<OrderItem>();

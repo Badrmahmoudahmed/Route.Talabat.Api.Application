@@ -13,7 +13,7 @@ namespace Talabat.Core.Entities.OredrAggregate
         {
             
         }
-        public Order(string buyerEmail,Adress shippingadress,DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subTotal)
+        public Order(string buyerEmail,AdressOrder shippingadress,DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subTotal)
 		{
             ShippingAdress = shippingadress;
 			BuyerEmail = buyerEmail;
@@ -25,7 +25,7 @@ namespace Talabat.Core.Entities.OredrAggregate
 		public string BuyerEmail { get; set; }
         public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.UtcNow;
         public OrderStatues Statues { get; set; } = OrderStatues.Pending;
-        public Adress ShippingAdress { get; set; }
+        public AdressOrder ShippingAdress { get; set; }
         public DeliveryMethod DeliveryMethod { get; set; }
         public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
         public decimal SubTotal { get; set; }
