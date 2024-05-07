@@ -31,20 +31,23 @@ namespace Route.Talabat.Api.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser(string Email)
+		public async Task<ActionResult<IReadOnlyList<OrderToReurnDto>>> GetOrdersForUser(string Email)
 		{
 			var orders = await _orderService.GetOrdersForUserAsync(Email);
-			return Ok(orders);
+			var mappedorders = _mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReurnDto>>(orders);
+			return Ok(mappedorders);
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Order>> GetOrderForUser(int id , string email)
+		public async Task<ActionResult<OrderToReurnDto>> GetOrderForUser(int id , string email)
 		{
 			var order = await _orderService.GetOrderByIdForUserAsync(email, id);
 
 			if (order is null) return NotFound(new ApiResponse(404));
+
+			var MappdedOrder = _mapper.Map<Order, OrderToReurnDto>(order);
 			
-			return Ok(order);
+			return Ok(MappdedOrder);
 		}
 
 
