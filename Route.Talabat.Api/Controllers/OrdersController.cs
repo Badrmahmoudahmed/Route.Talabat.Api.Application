@@ -37,6 +37,16 @@ namespace Route.Talabat.Api.Controllers
 			return Ok(orders);
 		}
 
+		[HttpGet("{id}")]
+		public async Task<ActionResult<Order>> GetOrderForUser(int id , string email)
+		{
+			var order = await _orderService.GetOrderByIdForUserAsync(email, id);
+
+			if (order is null) return NotFound(new ApiResponse(404));
+			
+			return Ok(order);
+		}
+
 
 	}
 }
