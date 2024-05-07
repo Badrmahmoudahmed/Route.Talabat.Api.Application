@@ -56,9 +56,10 @@ namespace Talabat.Services
 			return order;
 		}
 
-		public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
+		public async Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
 		{
-			throw new NotImplementedException();
+			var deliverymethod = await _unitofWork.Repository<DeliveryMethod>().GetAllAsync();
+			return deliverymethod;
 		}
 
 		public async Task<Order> GetOrderByIdForUserAsync(string buyerEmail, int orederId)

@@ -26,7 +26,8 @@ namespace Route.Talabat.Api.Helpers
             CreateMap<OrderItem, OrderItemDto>()
                 .ForMember(D => D.ProductId, O => O.MapFrom(S => S.Product.ProductId))
                 .ForMember(D => D.ProductName, O => O.MapFrom(S => S.Product.ProductName))
-                .ForMember(D => D.PictureUrl, O => O.MapFrom(S => S.Product.PictureUrl));
+                .ForMember(D => D.PictureUrl, O => O.MapFrom(S => S.Product.PictureUrl))
+                .ForMember(D => D.PictureUrl, O => O.MapFrom<OrderItemPictureUrlResolver>());
         }
     }
 }

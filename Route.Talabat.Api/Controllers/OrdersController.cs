@@ -50,6 +50,14 @@ namespace Route.Talabat.Api.Controllers
 			return Ok(MappdedOrder);
 		}
 
+		[HttpGet]
+		public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
+		{
+			var deliverymethod = await _orderService.GetDeliveryMethodsAsync();
+
+			return Ok(deliverymethod);
+		}
+
 
 	}
 }
