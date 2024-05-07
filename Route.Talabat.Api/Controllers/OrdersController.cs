@@ -30,7 +30,7 @@ namespace Route.Talabat.Api.Controllers
 			return Ok(order);
 		}
 
-		[HttpGet]
+		[HttpGet("GetAllOrders")]
 		public async Task<ActionResult<IReadOnlyList<OrderToReurnDto>>> GetOrdersForUser(string Email)
 		{
 			var orders = await _orderService.GetOrdersForUserAsync(Email);
