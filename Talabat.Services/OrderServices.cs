@@ -14,16 +14,18 @@ namespace Talabat.Services
 {
 	public class OrderServices : IOrderService
 	{
-		private readonly IBasketRepository _basketRepository;
+        private readonly IPaymentService _paymentService;
+        private readonly IBasketRepository _basketRepository;
 		private readonly IUnitofWork _unitofWork;
 
 		//private readonly IGenericRepository<Product> _productrepository;
 		//private readonly IGenericRepository<DeliveryMethod> _deliverymethodRepo;
 		//private readonly IGenericRepository<Order> _orderOrder;
 
-		public OrderServices(IBasketRepository basketRepository,IUnitofWork unitofWork/*IGenericRepository<Product> Productrepository,IGenericRepository<DeliveryMethod> deliverymethodRepo,IGenericRepository<Order> orderOrder*/)
+		public OrderServices(IPaymentService paymentService,IBasketRepository basketRepository,IUnitofWork unitofWork/*IGenericRepository<Product> Productrepository,IGenericRepository<DeliveryMethod> deliverymethodRepo,IGenericRepository<Order> orderOrder*/)
         {
-			_basketRepository = basketRepository;
+            _paymentService = paymentService;
+            _basketRepository = basketRepository;
 			_unitofWork = unitofWork;
 			//_productrepository = Productrepository;
 			//_deliverymethodRepo = deliverymethodRepo;
@@ -46,7 +48,17 @@ namespace Talabat.Services
 			var subtotal = orderItems.Sum(order => order.Price * order.Quantity);
 			var deliverymethod = await _unitofWork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMehtodID);
 
-			var order = new Order(buyerEmail, ShippingAdress, deliverymethod, orderItems, subtotal);
+			var spec = new OrderWithPaymentintentSpecs(basket.PaymentIntentId);
+			var existingorder = await _unitofWork.Repository<Order>().GetByIdWithSpecAsync(spec);
+
+			if(existingorder is not null)
+			{
+				 _unitofWork.Repository<Order>().Remove(existingorder);
+				_paymentService.CreateorUpdatePaymentIntent(basketId);
+
+            }
+
+			var order = new Order(buyerEmail, ShippingAdress, deliverymethod, orderItems, subtotal , basket.PaymentIntentId);
 
 			 _unitofWork.Repository<Order>().Add(order);
 

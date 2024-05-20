@@ -13,20 +13,22 @@ namespace Talabat.Core.Entities.OredrAggregate
         {
             
         }
-        public Order(string buyerEmail,AdressOrder shippingadress,DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subTotal)
+        public Order(string buyerEmail,AdressOrder shippingadress,DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subTotal , string paymentintentid)
 		{
             ShippingAdress = shippingadress;
 			BuyerEmail = buyerEmail;
 			DeliveryMethod = deliveryMethod;
 			Items = items;
 			SubTotal = subTotal;
-		}
+            PaymetnIntentId = paymentintentid;
+
+        }
 
 		public string BuyerEmail { get; set; }
         public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.UtcNow;
         public OrderStatues Statues { get; set; } = OrderStatues.Pending;
         public AdressOrder ShippingAdress { get; set; }
-        public DeliveryMethod DeliveryMethod { get; set; }
+        public DeliveryMethod? DeliveryMethod { get; set; }
         public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
         public decimal SubTotal { get; set; }
         public decimal GetTotal() => SubTotal + DeliveryMethod.Cost;
