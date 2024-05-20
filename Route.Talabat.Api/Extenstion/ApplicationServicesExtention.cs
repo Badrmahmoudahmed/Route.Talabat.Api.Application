@@ -7,6 +7,7 @@ using Talabat.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Talabat.Core;
+using Talabat.Services.PaymentService;
 
 namespace Route.Talabat.Api.Extenstion
 {
@@ -19,6 +20,7 @@ namespace Route.Talabat.Api.Extenstion
 			services.AddScoped(typeof(IUnitofWork), typeof(UnitofWork));
 			services.AddScoped(typeof(IBasketRepository), typeof(BascketRepository));
 			services.AddScoped(typeof(IAuthService),typeof(AuthService));
+			services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
 			o.TokenValidationParameters = new TokenValidationParameters()
 			{
