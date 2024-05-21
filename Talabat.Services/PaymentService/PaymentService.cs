@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Stripe;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using Talabat.Core.Entities;
 using Talabat.Core.Entities.OredrAggregate;
 using Talabat.Core.Repositiry.Contract;
 using Talabat.Core.Services.Contract;
+using Talabat.Core.Specification;
 using Talabat.Infrastructure;
 using Product = Talabat.Core.Entities.Product;
 
@@ -21,11 +23,13 @@ namespace Talabat.Services.PaymentService
         private readonly IBasketRepository _bascketRepository;
         private readonly IUnitofWork _unitofWork;
 
+
         public PaymentService(IConfiguration configuration ,IBasketRepository bascketRepository, IUnitofWork unitofWork)
         {
             _configuration = configuration;
             _bascketRepository = bascketRepository;
             _unitofWork = unitofWork;
+            
         }
         public async Task<CustmorBasket> CreateorUpdatePaymentIntent(string basketId)
         {
@@ -80,6 +84,22 @@ namespace Talabat.Services.PaymentService
            await _bascketRepository.UpdateBasketAsync(basket);
 
             return basket;
+        }
+
+        public async Task<Order?> UpdateOrderStatus(string paymentintentid, bool ispaid)
+        {
+            var spec = new OrderWithPaymentintentSpecs(paymentintentid);
+            var order = await _unitofWork.Repository<Order>().GetByIdWithSpecAsync(spec);
+            if (order is null) return null;
+
+            if (ispaid)
+                order.Statues = OrderStatues.PaymentRecived;
+            else
+                order.Statues = OrderStatues.PaymentFaild;
+
+            _unitofWork.Repository<Order>().Update(order);
+            await _unitofWork.CompleteAsync();
+            return order;
         }
     }
 }
