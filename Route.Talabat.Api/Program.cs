@@ -61,6 +61,13 @@ namespace Route.Talabat.Api
 
 
 				}); 
+			//builder.Services.AddCors(options =>
+			//	options.AddPolicy("MyPolicy" , policyoption =>
+			//	{
+			//		policyoption.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()/*.WithOrigins("http://localhost:4200")*/;
+			//	}
+			//	)
+			//);
 			#endregion
 			#endregion
 
@@ -93,12 +100,18 @@ namespace Route.Talabat.Api
 			{
 				app.UseSwaggerMiddleWare();
 			}
-			app.UseStatusCodePagesWithReExecute("/Errors/{0}");
-			app.UseHttpsRedirection();
 
-			//app.UseAuthorization();
+            app.UseStatusCodePagesWithReExecute("/Errors/{0}");
+			
+			app.UseHttpsRedirection();
+			app.UseRouting();
+
+			
 			app.UseStaticFiles();
 
+			app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+			//app.UseAuthentication();
+			app.UseAuthorization();
 			app.MapControllers();
 			#endregion
 

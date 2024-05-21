@@ -10,7 +10,7 @@ using Talabat.Core.Specification;
 
 namespace Talabat.Services
 {
-	internal class ProductService : IProductService
+	public class ProductService : IProductService
 	{
 		private readonly IUnitofWork _unitofWork;
 

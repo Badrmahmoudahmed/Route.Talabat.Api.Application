@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ using Talabat.Core.Specification;
 namespace Route.Talabat.Api.Controllers
 {
 
-	public class ProductsController : BaseController
+    public class ProductsController : BaseController
 	{
 		private readonly IGenericRepository<Product> _productRepository;
 		private readonly IGenericRepository<ProductBrand> _brands;
@@ -31,7 +32,7 @@ namespace Route.Talabat.Api.Controllers
 			_mapper = mapper;
 			_productService = productService;
 		}
-		[Authorize (AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		//[Authorize (AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpGet]
 		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetAll([FromQuery] ProductSpecParams productSpecParams)
 		{
@@ -66,6 +67,12 @@ namespace Route.Talabat.Api.Controllers
 		{
 			var Categories = await _productService.GetCategoriesAsync();
 			return Ok(Categories);
+		}
+
+		[HttpGet("test")]
+		public ActionResult<string> test()
+		{
+			return Ok("hello");
 		}
 
 	}
