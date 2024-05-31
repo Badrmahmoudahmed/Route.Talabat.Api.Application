@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Talabat.Core;
 using Talabat.Services.PaymentService;
+using Talabat.Services.CacheService;
 
 namespace Route.Talabat.Api.Extenstion
 {
@@ -15,6 +16,7 @@ namespace Route.Talabat.Api.Extenstion
 	{
 		public static IServiceCollection AddAplicationServices(this IServiceCollection services) 
 		{
+			services.AddSingleton(typeof(IResponseCacheService), typeof(ResponeseCacheService));
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositiry<>));
 			services.AddScoped(typeof(IProductService) , typeof(ProductService));
 			services.AddScoped(typeof(IOrderService), typeof(OrderServices));
