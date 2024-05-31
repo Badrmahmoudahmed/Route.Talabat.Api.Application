@@ -48,7 +48,7 @@ namespace Route.Talabat.Api.Helpers
 
             keybuilder.Append(request.Path);
 
-            foreach(var (key,value) in request.Query)
+            foreach (var (key, value) in request.Query.OrderBy(q => q.Key))
             {
                 keybuilder.Append($"/{key}-{value}");
             }
