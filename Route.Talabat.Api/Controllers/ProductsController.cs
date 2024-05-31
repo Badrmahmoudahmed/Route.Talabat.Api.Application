@@ -56,14 +56,16 @@ namespace Route.Talabat.Api.Controllers
 			return Ok(MappedProduct);
 		}
 
-		[HttpGet("brands")]
+        [Cached(600)]
+        [HttpGet("brands")]
 		public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetAllBrands()
 		{
 			var brands = await _productService.GetBrandsAsync();
 			return Ok(brands);
 		}
 
-		[HttpGet("categories")]
+        [Cached(600)]
+        [HttpGet("categories")]
 		public async Task<ActionResult<IReadOnlyList<ProductCategory>>> GetAllCategories()
 		{
 			var Categories = await _productService.GetCategoriesAsync();
